@@ -67,9 +67,14 @@ app.get('/reader', (req, res) => {
                 }
     
                 const outputArray =[];
-                //Create sets to 
+                //Create sets to remove duplicates.
                 const set1 = new Set(arr1);
                 const set2 = new Set(arr2);
+                console.log("***********************************************************");
+                console.log("The unduplicated sets are. Check your complete data on the output.txt file");
+                console.log("Set1:", set1);
+                console.log("Set1:", set2);
+                console.log("***********************************************************");
 
                 //check for every entry in the first set against every entry in the second set.
                 for(let i = 0; i < [...set1].length; i++){
