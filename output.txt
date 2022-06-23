@@ -1,0 +1,12 @@
+Kimberly, f matches Jason, m 71
+Kimberly, f matches Billy, m 80
+Kimberly, f matches Tommy, m 62
+Kimberly, f matches Zack, m 61
+Trini, f matches Jason, m 95
+Trini, f matches Billy, m 50
+Trini, f matches Tommy, m 86
+Trini, f matches Zack, m 85
+Billy, f matches Jason, m 95
+Billy, f matches Billy, m 59
+Billy, f matches Tommy, m 95
+Billy, f matches Zack, m 85

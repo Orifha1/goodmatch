@@ -1,5 +1,6 @@
 const express = require('express');
-const app = express()
+const fs = require("fs");
+const app = express();
 const port = 3000;
 const path = require('path');
 
@@ -12,7 +13,10 @@ app.use(express.urlencoded({extended:true})); // this middleware allows us to pa
 
 //The get method takes you to the page that has the form. 
 app.get('/', (req, res) => {
-    return res.render('home');
+    name1 ="";
+    name2="";
+    let message = false;
+    return res.render('home',{name1,name2,message});
 });
 
 //This method runs when the submit button is pressed on the frontend form.
@@ -21,18 +25,83 @@ app.post('/', (req, res) => {
         let name1 = req.body.name1;
         let name2 = req.body.name2;
         //Check if a number was sent
-        if(typeof (name1*1) === "number" || typeof (name2*1) === "number"){
+        if(isNaN(name1*1) && isNaN(name2*1)){
+            percentage = checkCharactorOccurence(name1,name2);
+            let message =false;
+            return res.render('home',{percentage,name1,name2,message});
+        }else{
+            name1 ="";
+            name2="";
+            let message = false;
             console.log("The name should be a string");
-            return res.render('home');
+            return res.render('home',{percentage,name1,name2, message});
         }
-        percentage = checkCharactorOccurence(name1,name2);
-        console.log("per:", percentage);
-        return res.render('home',{percentage,name1,name2});
     }catch(err){
         console.log("An Error has occurred");
     }
    
 });
+
+app.get('/reader', (req, res) => {
+    let errorOccurred = false
+    let message = false;
+    try {
+        fs.readFile(`${__dirname}/data.csv`, "utf-8", (err, data) => {
+            if (err){
+                console.log("An Error has occurred:", err);
+                let message = false;
+                return res.render('home',{message});
+            }
+            else{
+                let arr1 = [];
+                let arr2 = [];
+                let fi = data.toString().split("\r\n");
+                for(i in fi) {
+                    if(fi[i].toLowerCase().includes(", f")){
+                        
+                        arr1.push(fi[i]);
+                    }
+                    if(fi[i].toLowerCase().includes(", m")){
+                        arr2.push(fi[i]);
+                    }
+                }
+    
+                const outputArray =[];
+                //Create sets to 
+                const set1 = new Set(arr1);
+                const set2 = new Set(arr2);
+
+                //check for every entry in the first set against every entry in the second set.
+                for(let i = 0; i < [...set1].length; i++){
+                    for(let j = 0; j < [...set2].length; j++){
+                        let outPutResults = checkCharactorOccurence([...set1][i], [...set2][j]);
+                        outputArray.push(`${[...set1][i]} matches ${[...set2][j]} ${outPutResults}`);
+                  }
+                }
+                fs.writeFile("output.txt", outputArray.join("\n"), "utf-8", (err) => {
+                    if (err){
+                        console.log("An Error has occurred:",err);
+                        return res.render('home', {errorOccurred});
+                    }
+                    else {
+                        console.log("Data saved");
+                        errorOccurred = true;
+                    }
+                     
+                  });
+            } 
+          });
+        message=true;
+        return res.render('home',{message});
+        
+    } catch (error) {
+        console.log("An Error has occurred");
+        return res.render('home', {errorOccurred});
+    }
+
+});
+
+
 
 /**
  * @description
@@ -58,7 +127,7 @@ checkCharactorOccurence = (name1, name2) => {
             }
             return checkThepercentage(finalArray); // send the array with the values to this method to get a percentage.
         }else{
-            console.log("Error");
+            console.log("Invalid entry. Please enter a string.");
         }
     }catch(err){
         console.log("An error has occurred please try again.", err);
@@ -68,9 +137,8 @@ checkCharactorOccurence = (name1, name2) => {
 
 /**
  * @description
- * @param
- * @param
- * @return 
+ * @param occurrenceArray - This method checks the array and return a percentage value.
+ * @return percentage as a number.
  */
 checkThepercentage = (occurrenceArray) => {
     let pointer_a = 0;
@@ -100,7 +168,7 @@ checkThepercentage = (occurrenceArray) => {
     arrayToOverride = temp;
     temp = [];
     
-    return checkThepercentage(arrayToOverride);;
+    return checkThepercentage(arrayToOverride);
 }
 
 //Listening for connection.

@@ -34,19 +34,31 @@
         
             <button type="submit" class="btn btn-success">Calculate</button>
         </form>
-        <div class="card border border-dark mt-3 p-3 rounded col-sm-12 col-md-9 text-center">
+        <div class="card border border-dark mt-3 p-1 rounded col-sm-12 col-md-9 text-center">
             <div class="card-body">
-                <% if(typeof percentage !== "undefined" && percentage > 80){ %>
+                <% if(name1 !== "" && name2 !== "" && typeof percentage !== "undefined" && percentage > 80 ){ %>
                     <h3><%= name1 %> matches <%= name2 %> <%= percentage %> %, good match.</h3>
                 <% } %>
-                <% if(typeof percentage !== "undefined"  && percentage < 80){ %>
+                <% if(name1 !== "" && name2 !== "" && typeof percentage !== "undefined"  && percentage < 80){ %>
                     <h3><%= name1 %> matches <%= name2 %> <%= percentage %> %</h3>
                 <% } %>
-                <% if(typeof percentage === "undefined"){ %>
+                <% if(name1 === "" && name2 === ""){ %>
                     <h3>You have not calculated for a match yet.</h3>
+                    <p>Make sure to enter a valid String.</p>
                 <% } %>  
             </div>
         </div>
+
+        <div class="card border border-dark mt-3 p-3 rounded col-sm-12 col-md-9 text-center">
+            <div class="card-body">
+                <% if(message === true){ %>
+                    <p>Your data from the data.csv file has been saved check the output in the output.txt file.</p>
+                <% } %>  
+                <a type="button"class="btn btn-primary" href="/reader">Read from csv file</a>
+            </div>
+        </div>
+
+
     </div>
 </body>
 </html>
