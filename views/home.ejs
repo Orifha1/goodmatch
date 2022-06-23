@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <p></p>
+    <div class="container">
+        <h2 class="text-center">Enter the names you need to match to get the percentage</h2>
+        <p></p>
+        <div class="row justify-content-center">
+        <form action="/" method="POST" class="validated-form border border-dark p-5 p-3 rounded col-sm-12 col-md-9">
+            <div class="mb-3">
+                <label class="form-label" for="name1">Name 1 *</label>
+                <input class="form-control" type="text" id="username" name="name1" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <label class="form-label" for="name2">Name 2 *</label>
+                <input class="form-control" type="text" id="username" name="name2" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+        
+            <button type="submit" class="btn btn-success">Calculate</button>
+        </form>
+        <div class="card border border-dark mt-3 p-3 rounded col-sm-12 col-md-9 text-center">
+            <div class="card-body">
+                <% if(typeof percentage !== "undefined" && percentage > 80){ %>
+                    <h3><%= name1 %> matches <%= name2 %> <%= percentage %> %, good match.</h3>
+                <% } %>
+                <% if(typeof percentage !== "undefined"  && percentage < 80){ %>
+                    <h3><%= name1 %> matches <%= name2 %> <%= percentage %> %</h3>
+                <% } %>
+                <% if(typeof percentage === "undefined"){ %>
+                    <h3>You have not calculated for a match yet.</h3>
+                <% } %>  
+            </div>
+        </div>
+    </div>
+</body>
+</html>
